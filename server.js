@@ -15,11 +15,19 @@ app.set("view engine", "handlebars");
 
 
 app.get("/", function(req, res){
+    connection.query("SELECT * FROM movie order by id", function(err, result){
+        if (err) throw err;
 
+        res.render("index", { movie:result });
+    });
 });
 
 app.post("/movies", function(req, res){
+    connection.query("INSERT INTO movies (movies) VALUES(?)", [req.body.movie], function(err, result){
+        if (err) throw err;
 
+        res.redirect("/");
+    });
 });
 
 app.put("/movies", function(req, res){
